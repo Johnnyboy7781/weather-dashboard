@@ -31,7 +31,7 @@ main {
 .search-field {
     margin: 5px;
     border-bottom: 2px solid grey;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 }
 
 form {
@@ -69,6 +69,7 @@ form button:hover {
 .prev-search-list {
     display: flex;
     flex-direction: column;
+    padding-top: 10px;
 }
 
 .prev-city {
@@ -87,4 +88,59 @@ form button:hover {
 /* Weather info area styles */
 .weather-info {
     flex: 3;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.info-general {
+    border: 2px solid grey;
+    padding: 10px;
+}
+
+.info-general p {
+    margin: 10px 0;
+    font-size: 20px;
+}
+
+.info-general h2 {
+    font-size: 30px;
+}
+
+.uv {
+    background-color: green;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* 5-day forecast styles */
+.info-5-day {
+    margin-top: 10px;
+}
+
+.info-5-day h3 {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.forecast-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.day {
+    background-color: #3A4859;
+    color: white;
+    padding: 10px;
+    width: 18%;
+}
+
+.day h4 {
+    font-size: 20px;
+}
+
+.day > * {
+    padding-bottom: 10px;
 }
