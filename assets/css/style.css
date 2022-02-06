@@ -127,7 +127,8 @@ form button:hover {
 .forecast-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 .day {
@@ -135,6 +136,8 @@ form button:hover {
     color: white;
     padding: 10px;
     width: 18%;
+    min-width: 138px;
+    margin-bottom: 10px;
 }
 
 .day h4 {

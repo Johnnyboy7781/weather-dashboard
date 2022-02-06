@@ -2,6 +2,7 @@ const searchFormEl = document.querySelector("form");
 const searchInputEl = document.querySelector(".form-input");
 const infoGeneralEl = document.querySelector(".info-general");
 const info5DayEl = document.querySelector(".info-5-day");
+const prevSearchListEl = document.querySelector(".prev-search-list");
 const apiKey = "941125bb6927b198d0351a7463f13a4a";
 
 const populateForecastArea = weatherData => {
@@ -103,6 +104,29 @@ const getWeatherData = (lat, lon, cityName) => {
     })
 }
 
+const createNewPrevCity = cityName => {
+    let prevCityEl = document.createElement("div");
+    prevCityEl.className = "prev-city";
+    prevCityEl.innerHTML = cityName;
+    prevSearchListEl.append(prevCityEl);
+}
+
+const saveCity = cityName => {
+    let savedCities = JSON.parse(localStorage.getItem("cities"));
+    
+    if (!savedCities) {
+        savedCities = [];
+    } else if (savedCities.includes(cityName)) {
+        return;
+    }
+
+    createNewPrevCity(cityName);
+    
+    savedCities.push(cityName);
+
+    localStorage.setItem("cities", JSON.stringify(savedCities));
+}
+
 const formSubmitHandler = event => {
     event.preventDefault();
     let input = searchInputEl.value.trim();
@@ -115,6 +139,7 @@ const formSubmitHandler = event => {
     apiUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + input + "&limit=1&appid=" + apiKey;
     fetch(apiUrl).then(response => {
         if (response.ok) {
+            saveCity(input);
             response.json().then(data => {
                 let lat = data[0].lat;
                 let lon = data[0].lon;
