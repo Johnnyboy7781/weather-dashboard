@@ -147,3 +147,9 @@ form button:hover {
 .day > * {
     padding-bottom: 10px;
 }
+
+@media screen and (max-width: 725px) {
+    main {
+        flex-direction: column;
+    }
+}
