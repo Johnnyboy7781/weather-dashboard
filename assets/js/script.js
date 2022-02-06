@@ -161,8 +161,13 @@ const formSubmitHandler = event => {
     apiUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + input + "&limit=1&appid=" + apiKey;
     fetch(apiUrl).then(response => {
         if (response.ok) {
-            saveCity(input);
             response.json().then(data => {
+                if (!data[0]) {
+                    alert("Not a valid city name, please try again!");
+                    return;
+                }
+
+                saveCity(input);
                 let lat = data[0].lat;
                 let lon = data[0].lon;
                 getWeatherData(lat, lon, input);
