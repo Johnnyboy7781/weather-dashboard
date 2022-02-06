@@ -104,11 +104,33 @@ const getWeatherData = (lat, lon, cityName) => {
     })
 }
 
+const formatCityName = cityName => {
+    let formattedCityName = cityName.toLowerCase();
+    let nameArr = formattedCityName.split(" ");
+    formattedCityName = "";
+    for (let i = 0; i < nameArr.length; i++) {
+        nameArr[i] = nameArr[i][0].toUpperCase() + nameArr[i].substring(1);
+        formattedCityName += nameArr[i] + " ";
+    }
+    formattedCityName.trim();
+    return formattedCityName;
+}
+
 const createNewPrevCity = cityName => {
     let prevCityEl = document.createElement("div");
     prevCityEl.className = "prev-city";
-    prevCityEl.innerHTML = cityName;
+    prevCityEl.innerHTML = formatCityName(cityName);
     prevSearchListEl.append(prevCityEl);
+}
+
+const loadCities = () => {
+    let savedCities = JSON.parse(localStorage.getItem("cities"));
+
+    if (!savedCities) return;
+
+    for (let i = 0; i < savedCities.length; i++) {
+        createNewPrevCity(savedCities[i]);
+    }
 }
 
 const saveCity = cityName => {
@@ -151,4 +173,5 @@ const formSubmitHandler = event => {
     })
 }
 
+loadCities();
 searchFormEl.addEventListener("submit", formSubmitHandler);
