@@ -3,7 +3,7 @@
 ## Purpose
 A responsive website that pulls information from OpenWeather's Weather and Geocoding APIs. View the OpenWeather API docs here: https://openweathermap.org/api. 
 
-![Screenshot](assets/images/weatherDashScreenshot.png)
+![Screenshot](assets/images/weatherDashScreenshot.PNG)
 
 ## Built With
 * HTML
