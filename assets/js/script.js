@@ -23,7 +23,6 @@ const populateForecastArea = weatherData => {
         dayDateEl.textContent = convertDate(weatherData.daily[i].dt * 1000);
         dayEl.append(dayDateEl);
 
-        console.log(weatherData.daily[i].weather.icon);
         let iconEl = document.createElement("img");
         iconEl.setAttribute("src", "http://openweathermap.org/img/wn/" + weatherData.daily[i].weather[0].icon + "@2x.png");
         dayEl.append(iconEl);
@@ -50,7 +49,7 @@ const populateInfoArea = (weatherData, cityName) => {
     infoGeneralEl.innerHTML = "";
 
     let cityNameEl = document.createElement("h2");
-    cityNameEl.textContent = cityName + " " + convertDate();
+    cityNameEl.textContent = formatCityName(cityName) + " " + convertDate();
     infoGeneralEl.append(cityNameEl);
 
     let tempEl = document.createElement("p");
@@ -70,6 +69,14 @@ const populateInfoArea = (weatherData, cityName) => {
     uvEl.textContent = "UV Index: ";
     uvSpanEl.className = "uv";
     uvSpanEl.textContent = weatherData.current.uvi;
+    if (weatherData.current.uvi <= 2) {
+        uvSpanEl.style.backgroundColor = "green";
+    } else if (weatherData.current.uvi <= 7) {
+        uvSpanEl.style.backgroundColor = "yellow";
+        uvSpanEl.style.color = "black";
+    } else if (weatherData.current.uvi <= 8) {
+        uvSpanEl.style.backgroundColor = "red";
+    }
     uvEl.append(uvSpanEl);
     infoGeneralEl.append(uvEl);
 
@@ -97,7 +104,6 @@ const getWeatherData = (lat, lon, cityName) => {
     fetch(apiUrl).then(response => {
         if (response.ok) {
             response.json().then(data => {
-                console.log(data);
                 populateInfoArea(data, cityName);
             });
         }
@@ -138,26 +144,18 @@ const saveCity = cityName => {
     
     if (!savedCities) {
         savedCities = [];
-    } else if (savedCities.includes(cityName)) {
+    } else if (savedCities.includes(cityName.toLowerCase())) {
         return;
     }
 
-    createNewPrevCity(cityName);
     
-    savedCities.push(cityName);
+    createNewPrevCity(cityName);
+    savedCities.push(cityName.toLowerCase());
 
     localStorage.setItem("cities", JSON.stringify(savedCities));
 }
 
-const formSubmitHandler = event => {
-    event.preventDefault();
-    let input = searchInputEl.value.trim();
-
-    if (!input) {
-        alert("Please enter a valid city name!");
-        return;
-    }
-
+const getLocData = input => {
     apiUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + input + "&limit=1&appid=" + apiKey;
     fetch(apiUrl).then(response => {
         if (response.ok) {
@@ -178,5 +176,25 @@ const formSubmitHandler = event => {
     })
 }
 
+const formSubmitHandler = event => {
+    event.preventDefault();
+    let input = searchInputEl.value.trim();
+
+    if (!input) {
+        alert("Please enter a valid city name!");
+        return;
+    }
+
+    getLocData(input);
+}
+
+const prevCityButtonHandler = event => {
+    let targetDiv = event.target;
+    if (targetDiv.className === "prev-city") {
+        getLocData(targetDiv.innerHTML.trim());
+    }
+}
+
 loadCities();
+prevSearchListEl.addEventListener("click", prevCityButtonHandler);
 searchFormEl.addEventListener("submit", formSubmitHandler);
