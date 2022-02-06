@@ -22,6 +22,11 @@ const populateForecastArea = weatherData => {
         dayDateEl.textContent = convertDate(weatherData.daily[i].dt * 1000);
         dayEl.append(dayDateEl);
 
+        console.log(weatherData.daily[i].weather.icon);
+        let iconEl = document.createElement("img");
+        iconEl.setAttribute("src", "http://openweathermap.org/img/wn/" + weatherData.daily[i].weather[0].icon + "@2x.png");
+        dayEl.append(iconEl);
+
         let tempEl = document.createElement("p");
         tempEl.textContent = "Temp: " + weatherData.daily[i].temp.max + "F";
         dayEl.append(tempEl);
